@@ -48,10 +48,10 @@ export default function SignIn() {
     console.log(formValue,"formValue")
     const response=await axios.post(LOGIN_USER,formValue)
     .then((res)=>{
-      console.log("re",res?.data.data)
-      navigate("/")
-      localStorage.setItem("userId", res?.data.data?._id)
-      localStorage.setItem("UserProfile", JSON.stringify(  res?.data.data))
+      console.log("dd",res?.response?.data?.message)
+     if(res?.data?.data){ navigate("/")
+      localStorage.setItem("userId", res?.data?.data?._id)
+      localStorage.setItem("UserProfile", JSON.stringify(  res?.data?.data))
       toast.success("Welcome to the Blog App", {
         position: "top-right",
         autoClose: 5000,
@@ -62,9 +62,10 @@ export default function SignIn() {
         progress: undefined,
         theme: "light",
         });
-      return res?.data
+      return res?.data}
     }).catch((err)=>{
-      toast.error(err.message, {
+      console.log(err)
+      toast.error(err?.response?.data?.message, {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -85,7 +86,7 @@ export default function SignIn() {
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
+            paddingBlock: 8,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',

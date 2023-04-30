@@ -46,12 +46,13 @@ const Blog = ({ title, description, imageURL, userName, isUser, id }) => {
      
   };
   return (
-    <div>
-      {" "}
+    <div className="blog_container">
+     
       <Card
         sx={{
-          width: "40%",
-          margin: "auto",
+          maxWidth: "500px",
+          width:"100%",
+          margin: " auto",
           mt: 2,
           padding: 2,
           boxShadow: "5px 5px 10px #ccc",

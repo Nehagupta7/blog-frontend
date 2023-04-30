@@ -1,0 +1,14 @@
+@media only screen and (max-width: 450px) {
+    .header_nav{
+        order:2;
+        margin-block:18px 14px ;
+    }
+    .header_profile_section{
+        flex-grow: 3;
+        text-align: right;
+    }
+    .blog_container{
+        padding:20px;
+        width:100%;
+    }
+  }

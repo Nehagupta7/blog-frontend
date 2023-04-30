@@ -3,14 +3,15 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
+// import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import axios from "axios"
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {  toast } from 'react-toastify';
+import { SIGNUP_USER } from '../api/api';
 
 export default function SignUP() {
   const navigate=useNavigate()
@@ -48,13 +49,13 @@ export default function SignUP() {
       }
     }
     console.log(formValue,"formValue")
-    const response=await axios.post("http://localhost:8081/api/user/signup",formValue)
+    const response=await axios.post(SIGNUP_USER,formValue)
     .then((res)=>{
     console.log(res,"response")
-    return response?.data
+    return res?.data
     }).catch((err)=>{
         console.log(err,"error")
-        toast.error(err.message, {
+        toast.error(err?.response?.data?.message, {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -65,7 +66,7 @@ export default function SignUP() {
           theme: "light",
           });
     })
-    if(!response?.error){
+    if(!response?.error && response?.data?._id){
       toast.success(response?.message, {
         position: "top-right",
         autoClose: 5000,
@@ -76,7 +77,6 @@ export default function SignUP() {
         theme: "light",
         });
       navigate("/signin")
-      console.log("esponse?._id",response?.data?._id)
       localStorage.setItem("userId", response?.data?._id)
     }
   };
@@ -86,7 +86,7 @@ export default function SignUP() {
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
+            paddingBlock: 8,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -149,8 +149,7 @@ export default function SignUP() {
             <Grid container justifyContent="flex-end">
               <Grid item>
               <Link to="/signin" style={{fontSize: "0.875rem", color: "#1976d2",}}>  
-                
-                  Already have an account? Sign in
+                                  Already have an account? Sign in
                 </Link>
               </Grid>
             </Grid>

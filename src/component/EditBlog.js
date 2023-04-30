@@ -81,7 +81,7 @@ const EditBlog = () => {
   };
 
   return (
-    <div>
+    <div className="blog_container">
       {inputs && (
         <form onSubmit={handleSubmit}>
            <Box
@@ -118,6 +118,8 @@ const EditBlog = () => {
             onChange={handleChange}
             value={inputs.description}
             variant="outlined"
+            multiline
+            rows={4}
           />
           <span style={{color:"red"}}></span>
           <InputLabel  sx={labelStyles}>

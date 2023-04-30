@@ -97,7 +97,7 @@ toast.warning(`${value.charAt(0).toUpperCase()}${value.slice(1)} is required fie
     
     SplashImageUrl();},[])
   return (
-    <div>
+    <div className="blog_container">
       <form onSubmit={handleSubmit}>
         <Box
           margin={"auto"}
@@ -133,6 +133,8 @@ toast.warning(`${value.charAt(0).toUpperCase()}${value.slice(1)} is required fie
             onChange={handleChange}
             value={inputs.description}
             variant="outlined"
+            multiline
+            rows={4}
           />
           <span style={{color:"red"}}></span>
           <InputLabel  sx={labelStyles}>

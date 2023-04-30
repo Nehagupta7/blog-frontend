@@ -41,10 +41,9 @@ function PricingContent() {
         <Toolbar sx={{ flexWrap: 'wrap' }}>
         <span style={{ marginRight:"15px"}}><GiButterfly size={30}/></span>
           <Typography variant="h6" color="#fff" noWrap sx={{ flexGrow: 0 }}>
-          
             N G
           </Typography>
-          <nav style={{ flexGrow: 1, color:"#fff",gap:"18px" ,display:"flex",alignItems:"center",justifyContent:"center"}} >
+          <nav  className="header_nav" style={{ flexGrow: 3, color:"#fff",gap:"18px" ,display:"flex",alignItems:"center",justifyContent:"center"}} >
             <Link
               variant="button"
               to="/"
@@ -67,8 +66,9 @@ function PricingContent() {
               Add Blog
             </Link>
           </nav>
-         { !userProfile?.name?<Button href="/signIn" variant="outlined" sx={{ my: 1, mx: 1.5,color:"#fff",borderColor:"#fff",":hover":{color:"#fff",borderColor:"#fff"} }}>
-            Login
+          <div class="header_profile_section">
+         { !userProfile?.name?<Button  variant="outlined" sx={{ my: 1, mx: 1.5,color:"#fff",borderColor:"#fff",":hover":{color:"#fff",borderColor:"#fff"} }}>
+           <Link to="/signin" style={{color:"#fff",textDecoration:"none"}}>Login</Link>
           </Button>
           :<>
           <IconButton
@@ -122,10 +122,11 @@ function PricingContent() {
           Logout
         </MenuItem>
       </Menu></>}
+      </div>
         </Toolbar>
       </AppBar>
    
-     
+    
      
     </React.Fragment>
   );

@@ -12,6 +12,7 @@ import MyBlogs from './component/MyBlog';
 import EditBlog from './component/EditBlog';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import "./style/custom.css"
 import { useEffect } from 'react';
 function App() {
   const navigate=useNavigate();
