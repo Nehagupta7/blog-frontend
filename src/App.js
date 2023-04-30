@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import './App.css';
 // import Home from './component/Home';
 // import Login from './component/SignUp';
@@ -10,18 +10,31 @@ import AddBlog from './component/AddBlog';
 import AllBlogs from './component/AllBlogs';
 import MyBlogs from './component/MyBlog';
 import EditBlog from './component/EditBlog';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useEffect } from 'react';
 function App() {
+  const navigate=useNavigate();
+  const userLogin=localStorage.getItem("userId")
+  useEffect(()=>{
+    if(!userLogin){
+      navigate('/signin')
+    }
+  },[])
   return (
     <div className="App">
       <Header/>
      <Routes>
-      <Route path ="/signin" element={<SignIn/>} />
-      <Route path ="/signup" element={<SignUP />} />
-      <Route path ="/blogs" element={<AllBlogs />} />
+     
+      <Route path ="/" element={<AllBlogs />} />
       <Route path ="/my-blogs" element={<MyBlogs />} />
       <Route path ="/addblog" element={<AddBlog />} />
       <Route path="/my-blogs/:id" element={<EditBlog />} />
+    <Route path ="/signin" element={<SignIn/>} />
+    <Route path ="/signup" element={<SignUP />} />
+   
+    
+    
      </Routes>
      <ToastContainer/>
     </div>

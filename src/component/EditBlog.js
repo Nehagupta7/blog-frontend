@@ -3,7 +3,10 @@ import { Box } from "@mui/system";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-const labelStyles = { mb: 1, mt: 2, fontSize: "24px", fontWeight: "bold" };
+import {UPDATE_BLOG,ALL_BLOG} from "../api/api"
+import { toast } from "react-toastify";
+const labelStyles = { mb: "5px", mt: "10px", fontSize: "16px", fontWeight: "bold" ,textAlign:"left"};
+
 
 const EditBlog = () => {
   const navigate = useNavigate();
@@ -19,10 +22,9 @@ const EditBlog = () => {
   };
   const fetchDetails = async () => {
     const res = await axios
-      .get(`http://localhost:8080/api/blog/${id}`)
+      .get(`${ALL_BLOG}${id}`)
       .catch((err) => console.log(err));
     const data = await res?.data;
-    console.log(data,"response")
     return data;
   };
   useEffect(() => {
@@ -31,14 +33,28 @@ const EditBlog = () => {
       setInputs({
         title: data?.blog?.title,
         description: data?.blog?.description,
+        imageURL:data?.blog?.image
       });
+      console.log(inputs)
     });
   }, [id]);
   const sendRequest = async () => {
     const res = await axios
-      .put(`http://localhost:8080/api/blog/update/${id}`, {
+      .put(`${UPDATE_BLOG}${id}`, {
         title: inputs.title,
         description: inputs.description,
+        image:inputs.imageURL
+      }).then((resData)=>{
+        toast.success("Blog Updated Successfully", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          });
       })
       .catch((err) => console.log(err));
 
@@ -46,7 +62,16 @@ const EditBlog = () => {
     console.log(data,"response")
     return data;
   };
-  console.log(blog);
+  const SplashImageUrl= async()=>{
+    const splashImg= "https://source.unsplash.com/featured/300x203"
+     const res = await axios
+       .get(splashImg)
+       .catch((err) => console.log(err));
+     const data = await res.request.responseURL;
+     console.log(data)
+     setInputs({...inputs,imageURL:data})
+     return data;
+   }
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(inputs);
@@ -59,53 +84,79 @@ const EditBlog = () => {
     <div>
       {inputs && (
         <form onSubmit={handleSubmit}>
-          <Box
-            border={3}
-            borderColor="linear-gradient(90deg, rgba(58,75,180,1) 2%, rgba(116,49,110,1) 36%, rgba(2,0,161,1) 73%, rgba(69,92,252,1) 100%)"
-            borderRadius={10}
-            boxShadow="10px 10px 20px #ccc"
-            padding={3}
-            margin={"auto"}
-            marginTop={3}
-            display="flex"
-            flexDirection={"column"}
-            width={"80%"}
+           <Box
+          margin={"auto"}
+          marginTop={3}
+          display="flex"
+          flexDirection={"column"}
+          sx={{width:"100%",maxWidth:"400px"}}
+        >
+          <Typography
+            padding={1}
+            color="#00246b"
+            variant="h5"
+            textAlign={"center"}
+            fontWeight={500}
           >
-            <Typography
-              fontWeight={"bold"}
-              padding={3}
-              color="grey"
-              variant="h2"
-              textAlign={"center"}
-            >
-              Post Your Blog
-            </Typography>
-            <InputLabel sx={labelStyles}>Title</InputLabel>
-            <TextField
-              name="title"
-              onChange={handleChange}
-              value={inputs.title}
-              margin="auto"
-              variant="outlined"
-            />
-            <InputLabel sx={labelStyles}>Description</InputLabel>
-            <TextField
-              name="description"
-              onChange={handleChange}
-              value={inputs.description}
-              margin="auto"
-              variant="outlined"
-            />
+            Edit Your Blog
+          </Typography>
+          <InputLabel  sx={labelStyles}>
+            Title of blog
+          </InputLabel>
+          <TextField
+            name="title"
+            onChange={handleChange}
+            value={inputs.title}
+            variant="outlined"
+          />
+          <span style={{color:"red"}}></span>
+          <InputLabel  sx={labelStyles}>
+            Description
+          </InputLabel>
+          <TextField
+            name="description"
+            onChange={handleChange}
+            value={inputs.description}
+            variant="outlined"
+          />
+          <span style={{color:"red"}}></span>
+          <InputLabel  sx={labelStyles}>
+          Genrate Random Image for Blog
+          </InputLabel>
+          <TextField
+            name="imageURL"
+            onChange={handleChange}
+            value={inputs.imageURL}
+            type="hidden"
+            variant="outlined"
+            sx={{visibility:"hidden"}}
+          />
+          <div style={{display:"flex", flexDirection:"column",gap:"15px",alignItems:"center",justifyContent:"space-between"}}>
+          <img src={ inputs.imageURL || "/images.png"} style={{width:"150px",height:"150px",objectFit:"cover"}}/>
 
-            <Button
-              sx={{ mt: 2, borderRadius: 4 }}
-              variant="contained"
-              color="warning"
-              type="submit"
-            >
-              Submit
-            </Button>
-          </Box>
+          <Button
+            sx={{ bgcolor:"#00246B" ,":hover":{
+              background:"#00246B"
+            }}}
+            onClick={()=>{
+              SplashImageUrl();
+            }}
+            variant="contained"
+             type="button"
+          >
+           New Image
+          </Button>
+          </div>
+          <Button
+            sx={{ mt: 2, bgcolor:"#00246B" ,":hover":{
+              background:"#00246B"
+            }}}
+            variant="contained"
+             type="submit"
+          >
+            Submit
+          </Button>
+        </Box>
         </form>
       )}
     </div>

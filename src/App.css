@@ -1,7 +1,20 @@
+
 .App {
   text-align: center;
+  width:100%;
+  margin:0 auto;
+  background-color: #FCF6F5FF;
+  min-height: 100vh;
+  height:auto;
 }
-
+.main_container{
+  width: 100%;
+  max-width: 1280px;
+  margin:0 auto;
+}
+.green{
+  color:#01be96
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -28,6 +41,9 @@
   color: #61dafb;
 }
 
+input{
+  padding: 13px 10px !important;
+}
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

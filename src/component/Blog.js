@@ -12,7 +12,11 @@ import React from "react";
 // import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
 // import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useNavigate } from "react-router-dom";
+import {FiEdit} from "react-icons/fi"
+import {AiFillDelete} from "react-icons/ai"
 import axios from "axios";
+import {ALL_BLOG} from "../api/api"
+import { toast } from "react-toastify";
 const Blog = ({ title, description, imageURL, userName, isUser, id }) => {
   const navigate = useNavigate();
   const handleEdit = () => {
@@ -20,15 +24,26 @@ const Blog = ({ title, description, imageURL, userName, isUser, id }) => {
   };
   const deleteRequest = async () => {
     const res = await axios
-      .delete(`http://localhost:8080/api/blog/${id}`)
+      .delete(`${ALL_BLOG}${id}`)
+      .then(() =>{ navigate("/addblog")
+      toast.success("Blog Deleted Successfully", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
+    })
       .catch((err) => console.log(err));
     const data = await res.data;
     return data;
   };
   const handleDelete = () => {
     deleteRequest()
-      .then(() => navigate("/"))
-      .then(() => navigate("/blogs"));
+     
   };
   return (
     <div>
@@ -45,23 +60,38 @@ const Blog = ({ title, description, imageURL, userName, isUser, id }) => {
           },
         }}
       >
+        
+       
         {isUser && (
-          <Box display="flex">
-            <IconButton onClick={handleEdit} sx={{ marginLeft: "auto" }}>
-              {/* <ModeEditOutlineIcon color="warning" /> */}
-              edit
-            </IconButton>
-            <IconButton onClick={handleDelete}>
-              {/* <DeleteForeverIcon color="error" /> */}
-              delete
-            </IconButton>
-          </Box>
+          <>
+           <CardHeader
+      avatar={
+        <Avatar
+          sx={{ bgcolor: "#00246B" }}
+          aria-label="recipe"
+        >
+          {userName ? userName.charAt(0) : ""}
+        </Avatar>
+      }
+      title={(
+        <Box display="flex">
+          <IconButton onClick={handleEdit} sx={{ marginLeft: "auto" }}>
+            <FiEdit color="green" />
+          </IconButton>
+          <IconButton onClick={handleDelete}>
+            <AiFillDelete color="red" />
+          </IconButton>
+        </Box>
+      )}
+    />
+        
+        </>
+
         )}
         <CardHeader
           avatar={
-            <Avatar
-              
-              sx={{ bgcolor: "red" }}
+           !isUser && <Avatar
+              sx={{ bgcolor: "#00246B" }}
               aria-label="recipe"
             >
               {userName ? userName.charAt(0) : ""}
@@ -84,7 +114,7 @@ const Blog = ({ title, description, imageURL, userName, isUser, id }) => {
             variant="body2"
             color="text.secondary"
           >
-            <b>{userName}</b> {": "} {description}
+            <b style={{color:"#00246B"}}>{userName}</b> {": "} {description}
           </Typography>
         </CardContent>
       </Card>

@@ -1,9 +1,12 @@
-import { Box, Button, InputLabel, TextField, Typography } from "@mui/material";
+import { Box, Button, ImageList, InputLabel, TextField, Typography } from "@mui/material";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {ADD_BLOG} from "../api/api"
+import { toast } from "react-toastify";
 
-const labelStyles = { mb: 1, mt: 2, fontSize: "24px", fontWeight: "bold" };
+
+const labelStyles = { mb: "5px", mt: "10px", fontSize: "16px", fontWeight: "bold" ,textAlign:"left"};
 const AddBlog = () => {
   const navigate = useNavigate();
   const [inputs, setInputs] = useState({
@@ -19,7 +22,7 @@ const AddBlog = () => {
   };
   const sendRequest = async () => {
     const res = await axios
-      .post("http://localhost:8080/api/blog/add", {
+      .post(ADD_BLOG, {
         title: inputs.title,
         description: inputs.description,
         image: inputs.imageURL,
@@ -29,13 +32,70 @@ const AddBlog = () => {
     const data = await res.data;
     return data;
   };
+  const SplashImageUrl= async()=>{
+   const splashImg= "https://source.unsplash.com/featured/300x203"
+    const res = await axios
+      .get(splashImg)
+      .catch((err) => console.log(err));
+    const data = await res.request.responseURL;
+    console.log(data)
+    setInputs({...inputs,imageURL:data})
+    return data;
+  }
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(inputs);
+    const userLogin=localStorage.getItem("userId")
+    if(!userLogin){
+      toast.warning("Please Login ", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        })
+        navigate("/signin")
+        return;
+    }
+    for(const value in inputs){
+      if(inputs[value]=== ""){
+        console.log(value)
+      return  getError(value);
+      }
+    }
+   
     sendRequest()
-      .then((data) => console.log(data))
-      .then(() => navigate("/blogs"));
+      .then((data) =>  toast.success("Blog Added Successfully", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        }))
+      .then(() => navigate("/"));
   };
+  const getError=(value)=>{
+    let valueLength=document.getElementsByName(value)?.length-1
+const formValue=document.getElementsByName(value)[valueLength].focus()
+toast.warning(`${value.charAt(0).toUpperCase()}${value.slice(1)} is required field`, {
+  position: "top-right",
+  autoClose: 5000,
+  hideProgressBar: false,
+  closeOnClick: true,
+  pauseOnHover: true,
+  draggable: true,
+  progress: undefined,
+  theme: "light",
+  });
+  }
+  useEffect(()=>{
+    
+    SplashImageUrl();},[])
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -44,13 +104,14 @@ const AddBlog = () => {
           marginTop={3}
           display="flex"
           flexDirection={"column"}
-          width={"50%"}
+          sx={{width:"100%",maxWidth:"400px"}}
         >
           <Typography
             padding={1}
-            color="black"
+            color="#00246b"
             variant="h5"
             textAlign={"center"}
+            fontWeight={500}
           >
             Post Your Blog
           </Typography>
@@ -61,35 +122,52 @@ const AddBlog = () => {
             name="title"
             onChange={handleChange}
             value={inputs.title}
-            margin="auto"
             variant="outlined"
           />
+          <span style={{color:"red"}}></span>
           <InputLabel  sx={labelStyles}>
             Description
           </InputLabel>
           <TextField
-            
             name="description"
             onChange={handleChange}
             value={inputs.description}
-            margin="auto"
             variant="outlined"
           />
+          <span style={{color:"red"}}></span>
           <InputLabel  sx={labelStyles}>
-            Image
+          Genrate Random Image for Blog
           </InputLabel>
           <TextField
             name="imageURL"
             onChange={handleChange}
             value={inputs.imageURL}
-            margin="auto"
+            type="hidden"
             variant="outlined"
+            sx={{visibility:"hidden"}}
           />
+          <div style={{display:"flex", flexDirection:"column",gap:"15px",alignItems:"center",justifyContent:"space-between"}}>
+          <img src={ inputs.imageURL || "/images.png"} style={{width:"150px",height:"150px",objectFit:"cover"}}/>
+
           <Button
-            sx={{ mt: 2, borderRadius: 4 }}
+            sx={{ bgcolor:"#00246B" ,":hover":{
+              background:"#00246B"
+            }}}
+            onClick={()=>{
+              SplashImageUrl();
+            }}
             variant="contained"
-            color="warning"
-            type="submit"
+             type="button"
+          >
+           New Image
+          </Button>
+          </div>
+          <Button
+            sx={{ mt: 2, bgcolor:"#00246B" ,":hover":{
+              background:"#00246B"
+            }}}
+            variant="contained"
+             type="submit"
           >
             Submit
           </Button>

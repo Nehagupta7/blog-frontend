@@ -27,7 +27,26 @@ export default function SignUP() {
   const handleSubmit = async(event) => {
     event.preventDefault();
 
-    
+    const getError=(value)=>{
+      let valueLength=document.getElementsByName(value)?.length-1
+  const formValueData=document.getElementsByName(value)[valueLength].focus()
+  toast.warning(`${value.charAt(0).toUpperCase()}${value.slice(1)} is required field`, {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+    });
+    }
+    for(const value in formValue){
+      if(formValue[value]=== ""){
+        console.log(value)
+      return  getError(value);
+      }
+    }
     console.log(formValue,"formValue")
     const response=await axios.post("http://localhost:8081/api/user/signup",formValue)
     .then((res)=>{
@@ -73,7 +92,7 @@ export default function SignUP() {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          <Avatar sx={{ m: 1, bgcolor: '#00246B',color:"#fff" }}>
             {/* <LockOutlinedIcon /> */}
           </Avatar>
           <Typography component="h1" variant="h5">
@@ -123,13 +142,14 @@ export default function SignUP() {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 3, mb: 2,bgcolor: '#00246B',color:"#fff" }}
             >
               Sign Up
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="/signin" variant="body2">
+              <Link to="/signin" style={{fontSize: "0.875rem", color: "#1976d2",}}>  
+                
                   Already have an account? Sign in
                 </Link>
               </Grid>
