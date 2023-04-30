@@ -113,7 +113,7 @@ toast.warning(`${value.charAt(0).toUpperCase()}${value.slice(1)} is required fie
             textAlign={"center"}
             fontWeight={500}
           >
-            Post Your Blog
+            Post Your Imagery Mood 
           </Typography>
           <InputLabel  sx={labelStyles}>
             Title of blog

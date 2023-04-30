@@ -1,3 +1,10 @@
+.hero_section{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    margin: 40px auto;
+}
+
 @media only screen and (max-width: 450px) {
     .header_nav{
         order:2;
@@ -11,4 +18,9 @@
         padding:20px;
         width:100%;
     }
+    .hero_section{
+        
+        margin: 20px auto;
+    }
+   
   }
