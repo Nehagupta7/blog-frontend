@@ -1,4 +1,4 @@
-const APIURL="https://blog-apis-not9.onrender.com"
+const APIURL="https://blog-apis-a5xs.onrender.com"
 // const APIURL="http://localhost:8000"
 
 export const LOGIN_USER=APIURL+"/api/user/signin"
